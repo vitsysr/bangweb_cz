@@ -66,6 +66,7 @@ export const LABELS: LabelRegistry = {
         canyondiablo:           "Canyon Diablo",
         frontier:               "Frontier",
         crazy_greygory:         "Crazy Greygory",
+	vlcata: 		"Vlčata",
     },
 
     ExpansionTooltip: {

@@ -31,6 +31,14 @@ export const GAME_STRINGS: GameStringRegistry = {
     PROMPT_EQUIP_RETURN: (card, player) =>                                  <>Po hraní {card}, karta bude ihned vrácena {player}. Pokračovat?</>,
     PROMPT_PLAY_OR_PICK: (card) =>                                          <>{card} : Zahrát kartu nebo ji odhodit?</>,
 
+PROMPT_MIKI_DRAW: (card) => <>Miki: Vyberte si 2 karty ze 4 tažených</>,
+PROMPT_VENA_ABILITY: (card) => <>Véna: Chcete si líznout na záchranu života?</>,
+PROMPT_SMIG_DEFEND: (card, player) => <>Šmíg cílí vaši kartu na stole! Zahrajte <b>Vedle!</b> na její ochranu.</>,
+PROMPT_PETUNA_DRAW: (card) => <>Peťuna: Chcete si na konci tahu líznout na další tah?</>,
+PROMPT_HOROUS_DRAW: (card) => <>Horouš: Chcete si líznout na záchranu před zraněním?</>,
+PROMPT_RIZEK_REVIVE: (card) => <>Jednoručka Řízek: Vracíte se v příštím tahu se 3 životy a 3 kartami!</>,
+PROMPT_LIBOR_ALCOHOL: (card) => <>Libor: Musíte zahrát pivo/alkohol, jinak ztratíte 1 život!</>,
+
     STATUS_GAME_OVER: () =>                                                 <>Konec hry</>,
     STATUS_YOUR_TURN: () =>                                                 <>Jsi na tahu ... Zvol, jak táhnout</>,
     STATUS_YOUR_TURN_OTHER: (player) =>                                     <>{player} musí zvolit, jak táhnout</>,
