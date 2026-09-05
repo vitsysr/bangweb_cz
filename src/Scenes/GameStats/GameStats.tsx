@@ -1,9 +1,12 @@
+import BangLogo from "../../Components/BangLogo";
 import Button from "../../Components/Button";
 import { getLabel, Language, LanguageProvider, useLanguage } from "../../Locale/Registry";
 import Env from "../../Model/Env";
 import { downloadCsv } from "../../Utils/FileUtils";
 import useFetch from "../../Utils/UseFetch";
 import { getLocalizedCardName } from "../Game/GameStringComponent";
+import "../../App.css";
+import "./Style/GameStats.css";
 
 interface PlayerStats {
     bangs_played: number;
@@ -21,6 +24,7 @@ interface PlayerGameReport {
     character: string;
     role: string;
     survived: boolean;
+    won: boolean;
     stats: PlayerStats;
 }
 
@@ -46,6 +50,7 @@ function getLocalizedRole(language: Language, role: string): string {
 
 function sortPlayers(players: PlayerGameReport[]): PlayerGameReport[] {
     return [...players].sort((a, b) => {
+        if (a.won !== b.won) return a.won ? -1 : 1;
         if (a.survived !== b.survived) return a.survived ? -1 : 1;
         return b.stats.kills - a.stats.kills;
     });
@@ -63,6 +68,7 @@ function GameStatsTable({ game }: { game: GameReport }) {
             getLabel(language, 'GameStats', 'COLUMN_CHARACTER'),
             getLabel(language, 'GameStats', 'COLUMN_ROLE'),
             getLabel(language, 'GameStats', 'COLUMN_SURVIVED'),
+            getLabel(language, 'GameStats', 'COLUMN_WON'),
             getLabel(language, 'GameStats', 'COLUMN_BANGS_PLAYED'),
             getLabel(language, 'GameStats', 'COLUMN_ABILITY_USES'),
             getLabel(language, 'GameStats', 'COLUMN_DYNAMITE_EXPLOSIONS'),
@@ -75,6 +81,7 @@ function GameStatsTable({ game }: { game: GameReport }) {
             getLocalizedCardName(language, player.character),
             getLocalizedRole(language, player.role),
             yesNo(player.survived),
+            yesNo(player.won),
             player.stats.bangs_played.toString(),
             player.stats.ability_uses.toString(),
             player.stats.dynamite_explosions.toString(),
@@ -85,45 +92,49 @@ function GameStatsTable({ game }: { game: GameReport }) {
         downloadCsv(`bang_game_${game.game_id}.csv`, [header, ...rows]);
     };
 
-    return <div className="flex flex-col items-center gap-4 p-4">
-        <h1 className="text-2xl font-bold">{getLabel(language, 'GameStats', 'TITLE')}</h1>
-        <div className="text-gray-600">{getLabel(language, 'GameStats', 'NUM_ROUNDS')}: {game.num_rounds}</div>
+    return <>
+        <h1 className="game-stats-title">{getLabel(language, 'GameStats', 'TITLE')}</h1>
+        <div className="game-stats-subtitle">{getLabel(language, 'GameStats', 'NUM_ROUNDS')}: {game.num_rounds}</div>
         <div className="overflow-x-auto w-full">
-            <table className="min-w-full border-collapse text-center">
+            <table className="game-stats-table min-w-full border-collapse text-center">
                 <thead>
-                    <tr className="border-b border-gray-400">
-                        <th className="p-2">{getLabel(language, 'GameStats', 'COLUMN_PLAYER')}</th>
-                        <th className="p-2">{getLabel(language, 'GameStats', 'COLUMN_CHARACTER')}</th>
-                        <th className="p-2">{getLabel(language, 'GameStats', 'COLUMN_ROLE')}</th>
-                        <th className="p-2">{getLabel(language, 'GameStats', 'COLUMN_SURVIVED')}</th>
-                        <th className="p-2">{getLabel(language, 'GameStats', 'COLUMN_BANGS_PLAYED')}</th>
-                        <th className="p-2">{getLabel(language, 'GameStats', 'COLUMN_ABILITY_USES')}</th>
-                        <th className="p-2">{getLabel(language, 'GameStats', 'COLUMN_DYNAMITE_EXPLOSIONS')}</th>
-                        <th className="p-2">{getLabel(language, 'GameStats', 'COLUMN_PRISON_TURNS')}</th>
-                        <th className="p-2">{getLabel(language, 'GameStats', 'COLUMN_DUELS_LOST')}</th>
-                        <th className="p-2">{getLabel(language, 'GameStats', 'COLUMN_KILLS')}</th>
+                    <tr>
+                        <th>{getLabel(language, 'GameStats', 'COLUMN_PLAYER')}</th>
+                        <th>{getLabel(language, 'GameStats', 'COLUMN_CHARACTER')}</th>
+                        <th>{getLabel(language, 'GameStats', 'COLUMN_ROLE')}</th>
+                        <th>{getLabel(language, 'GameStats', 'COLUMN_SURVIVED')}</th>
+                        <th>{getLabel(language, 'GameStats', 'COLUMN_WON')}</th>
+                        <th>{getLabel(language, 'GameStats', 'COLUMN_BANGS_PLAYED')}</th>
+                        <th>{getLabel(language, 'GameStats', 'COLUMN_ABILITY_USES')}</th>
+                        <th>{getLabel(language, 'GameStats', 'COLUMN_DYNAMITE_EXPLOSIONS')}</th>
+                        <th>{getLabel(language, 'GameStats', 'COLUMN_PRISON_TURNS')}</th>
+                        <th>{getLabel(language, 'GameStats', 'COLUMN_DUELS_LOST')}</th>
+                        <th>{getLabel(language, 'GameStats', 'COLUMN_KILLS')}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {players.map(player => (
-                        <tr key={player.user_id} className="border-b border-gray-200">
-                            <td className="p-2 font-medium">{player.username}</td>
-                            <td className="p-2">{getLocalizedCardName(language, player.character)}</td>
-                            <td className="p-2">{getLocalizedRole(language, player.role)}</td>
-                            <td className="p-2">{yesNo(player.survived)}</td>
-                            <td className="p-2">{player.stats.bangs_played}</td>
-                            <td className="p-2">{player.stats.ability_uses}</td>
-                            <td className="p-2">{player.stats.dynamite_explosions}</td>
-                            <td className="p-2">{player.stats.prison_turns_skipped}</td>
-                            <td className="p-2">{player.stats.duels_lost}</td>
-                            <td className="p-2">{player.stats.kills}</td>
+                        <tr key={player.user_id} className={player.won ? 'game-stats-winner' : ''}>
+                            <td className="font-medium">{player.username}</td>
+                            <td>{getLocalizedCardName(language, player.character)}</td>
+                            <td>{getLocalizedRole(language, player.role)}</td>
+                            <td>{yesNo(player.survived)}</td>
+                            <td>{yesNo(player.won)}</td>
+                            <td>{player.stats.bangs_played}</td>
+                            <td>{player.stats.ability_uses}</td>
+                            <td>{player.stats.dynamite_explosions}</td>
+                            <td>{player.stats.prison_turns_skipped}</td>
+                            <td>{player.stats.duels_lost}</td>
+                            <td>{player.stats.kills}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
         </div>
-        <Button color='blue' onClick={handleDownloadCsv}>{getLabel(language, 'GameStats', 'BUTTON_DOWNLOAD_CSV')}</Button>
-    </div>;
+        <div className="flex justify-center mt-4">
+            <Button color='blue' onClick={handleDownloadCsv}>{getLabel(language, 'GameStats', 'BUTTON_DOWNLOAD_CSV')}</Button>
+        </div>
+    </>;
 }
 
 function GameStatsInner() {
@@ -135,16 +146,21 @@ function GameStatsInner() {
     const games = useFetch<GameReport[]>(gamesUrl);
 
     if (!games) {
-        return <div className="p-4 text-center">{getLabel(language, 'GameStats', 'LOADING')}</div>;
+        return <div className="game-stats-subtitle">{getLabel(language, 'GameStats', 'LOADING')}</div>;
     }
     if (games.length === 0) {
-        return <div className="p-4 text-center">{getLabel(language, 'GameStats', 'NOT_FOUND')}</div>;
+        return <div className="game-stats-subtitle">{getLabel(language, 'GameStats', 'NOT_FOUND')}</div>;
     }
     return <GameStatsTable game={games[0]} />;
 }
 
 export default function GameStatsScene() {
     return <LanguageProvider>
-        <GameStatsInner />
+        <div className="game-stats-scene">
+            <BangLogo />
+            <div className="game-stats-panel">
+                <GameStatsInner />
+            </div>
+        </div>
     </LanguageProvider>;
 }

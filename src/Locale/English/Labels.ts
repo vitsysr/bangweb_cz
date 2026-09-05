@@ -105,6 +105,7 @@ export const LABELS: LabelRegistry = {
         COLUMN_CHARACTER: "Character",
         COLUMN_ROLE: "Role",
         COLUMN_SURVIVED: "Survived",
+        COLUMN_WON: "Won",
         COLUMN_BANGS_PLAYED: "Bangs Played",
         COLUMN_ABILITY_USES: "Ability Uses",
         COLUMN_DYNAMITE_EXPLOSIONS: "Dynamite Explosions",

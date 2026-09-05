@@ -105,6 +105,7 @@ export const LABELS: LabelRegistry = {
         COLUMN_CHARACTER: "Postava",
         COLUMN_ROLE: "Role",
         COLUMN_SURVIVED: "Přežil",
+        COLUMN_WON: "Vyhrál",
         COLUMN_BANGS_PLAYED: "Zahrané Bangy",
         COLUMN_ABILITY_USES: "Použití schopnosti",
         COLUMN_DYNAMITE_EXPLOSIONS: "Výbuchy dynamitu",
