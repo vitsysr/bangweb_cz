@@ -96,6 +96,24 @@ export const LABELS: LabelRegistry = {
         'icon-renegade':        "Odpadlík",
     },
 
+    GameStats: {
+        TITLE: "Statistiky hry",
+        LOADING: "Načítám statistiky...",
+        NOT_FOUND: "Statistiky hry nenalezeny.",
+        NUM_ROUNDS: "Počet kol",
+        COLUMN_PLAYER: "Hráč",
+        COLUMN_CHARACTER: "Postava",
+        COLUMN_ROLE: "Role",
+        COLUMN_SURVIVED: "Přežil",
+        COLUMN_BANGS_PLAYED: "Zahrané Bangy",
+        COLUMN_ABILITY_USES: "Použití schopnosti",
+        COLUMN_DYNAMITE_EXPLOSIONS: "Výbuchy dynamitu",
+        COLUMN_PRISON_TURNS: "Tahy ve vězení",
+        COLUMN_DUELS_LOST: "Prohrané souboje",
+        COLUMN_KILLS: "Zabití",
+        BUTTON_DOWNLOAD_CSV: "Stáhnout CSV",
+    },
+
     ui: {
         APP_TITLE: "Bang!",
         APP_WELCOME: "Vítej na bang.salvoserver.it,\nBang! online se všemi rozšířeními!\nHraj hned zdarma s kamarády!",
@@ -123,6 +141,7 @@ export const LABELS: LabelRegistry = {
         BUTTON_ENABLE_SOUNDS: "Zapnout zvuky",
         BUTTON_DISABLE_SOUNDS: "Vypnout zvuky",
         BUTTON_RETURN_LOBBY: "Zpět do lobby",
+        BUTTON_VIEW_STATS: "Zobrazit statistiky",
         BUTTON_OK: "OK",
         BUTTON_UNDO: "Zpět",
         BUTTON_YES: "Ano",

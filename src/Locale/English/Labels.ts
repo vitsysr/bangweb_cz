@@ -96,6 +96,24 @@ export const LABELS: LabelRegistry = {
         'icon-renegade':        "Renegade",
     },
 
+    GameStats: {
+        TITLE: "Game Stats",
+        LOADING: "Loading stats...",
+        NOT_FOUND: "No game stats found.",
+        NUM_ROUNDS: "Rounds",
+        COLUMN_PLAYER: "Player",
+        COLUMN_CHARACTER: "Character",
+        COLUMN_ROLE: "Role",
+        COLUMN_SURVIVED: "Survived",
+        COLUMN_BANGS_PLAYED: "Bangs Played",
+        COLUMN_ABILITY_USES: "Ability Uses",
+        COLUMN_DYNAMITE_EXPLOSIONS: "Dynamite Explosions",
+        COLUMN_PRISON_TURNS: "Prison Turns",
+        COLUMN_DUELS_LOST: "Duels Lost",
+        COLUMN_KILLS: "Kills",
+        BUTTON_DOWNLOAD_CSV: "Download CSV",
+    },
+
     ui: {
         APP_TITLE: "Bang!",
         APP_WELCOME: "Welcome to bang.salvoserver.it,\nBang! online with all expansions!\nPlay now for free with your friends!",
@@ -123,6 +141,7 @@ export const LABELS: LabelRegistry = {
         BUTTON_ENABLE_SOUNDS: "Enable Sounds",
         BUTTON_DISABLE_SOUNDS: "Disable Sounds",
         BUTTON_RETURN_LOBBY: "Return to Lobby",
+        BUTTON_VIEW_STATS: "View Stats",
         BUTTON_OK: "OK",
         BUTTON_UNDO: "Undo",
         BUTTON_YES: "Yes",
