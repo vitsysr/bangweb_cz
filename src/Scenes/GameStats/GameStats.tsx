@@ -1,3 +1,4 @@
+import "../../App.css";
 import BangLogo from "../../Components/BangLogo";
 import Button from "../../Components/Button";
 import { getLabel, Language, LanguageProvider, useLanguage } from "../../Locale/Registry";
@@ -5,7 +6,6 @@ import Env from "../../Model/Env";
 import { downloadCsv } from "../../Utils/FileUtils";
 import useFetch from "../../Utils/UseFetch";
 import { getLocalizedCardName } from "../Game/GameStringComponent";
-import "../../App.css";
 import "./Style/GameStats.css";
 
 interface PlayerStats {
@@ -29,7 +29,7 @@ interface PlayerGameReport {
 }
 
 interface GameReport {
-    game_id: string;
+    game_id: number;
     lobby_id: number;
     started_at: number;
     ended_at: number;
@@ -137,29 +137,27 @@ function GameStatsTable({ game }: { game: GameReport }) {
     </>;
 }
 
-function GameStatsInner() {
+function GameStatsInner({ gameId }: { gameId: string }) {
     const language = useLanguage();
-    const params = new URLSearchParams(window.location.search);
-    const lobbyId = params.get('lobby') ?? '';
 
-    const gamesUrl = Env.bangGamesUrl + '?' + new URLSearchParams({ lobby: lobbyId, limit: '1' }).toString();
-    const games = useFetch<GameReport[]>(gamesUrl);
+    const gamesUrl = Env.bangGamesUrl + '/' + gameId;
+    const report = useFetch<GameReport>(gamesUrl);
 
-    if (!games) {
+    if (!report) {
         return <div className="game-stats-subtitle">{getLabel(language, 'GameStats', 'LOADING')}</div>;
     }
-    if (games.length === 0) {
-        return <div className="game-stats-subtitle">{getLabel(language, 'GameStats', 'NOT_FOUND')}</div>;
-    }
-    return <GameStatsTable game={games[0]} />;
+    return <GameStatsTable game={report} />;
 }
 
 export default function GameStatsScene() {
-    return <LanguageProvider>
+    const params = new URLSearchParams(window.location.search);
+    const gameId = params.get('game');
+
+    return gameId && <LanguageProvider>
         <div className="game-stats-scene">
             <BangLogo />
             <div className="game-stats-panel">
-                <GameStatsInner />
+                <GameStatsInner gameId={gameId} />
             </div>
         </div>
     </LanguageProvider>;
