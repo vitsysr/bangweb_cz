@@ -345,7 +345,7 @@ function formDataAppend(params: URLSearchParams, key: string, value: string | un
 
 export default function StatusBar({ gameError, handleClearGameError, handleReturnLobby }: StatusProps) {
   const lobbyState = useContext(LobbyContext);
-  const { table, selector } = useContext(GameStateContext);
+  const { gameId, table, selector } = useContext(GameStateContext);
   const { handleClickCard, handleConfirm, handleUndo } = useSelectorConfirm();
   const language = useLanguage();
 
@@ -411,8 +411,10 @@ export default function StatusBar({ gameError, handleClearGameError, handleRetur
   const undoButton = handleUndo && <Button color='red' onClick={handleUndo}>{getLabel(language, 'ui', 'BUTTON_UNDO')}</Button>;
 
   if (isGameOver) {
+    const handleViewStats = () => window.open(`game_stats.html?game=${gameId}`, '_blank');
     return <div className="status-bar">
       {getLabel(language, 'ui', 'STATUS_GAME_OVER')}
+      <Button color='blue' onClick={handleViewStats}>{getLabel(language, 'ui', 'BUTTON_VIEW_STATS')}</Button>
       {checkMyUserFlag(lobbyState, 'lobby_owner') && <Button color='green' onClick={handleReturnLobby}>{getLabel(language, 'ui', 'BUTTON_RETURN_LOBBY')}</Button>}
     </div>;
   } else if (gameError) {
