@@ -113,6 +113,17 @@ export const LABELS: LabelRegistry = {
         COLUMN_DUELS_LOST: "Duels Lost",
         COLUMN_KILLS: "Kills",
         BUTTON_DOWNLOAD_CSV: "Download CSV",
+        EXTENDED_TITLE: "Extended Stats",
+        COLUMN_ELIMINATION_ORDER: "Elimination Order",
+        COLUMN_DIED_ROUND: "Died on Round",
+        COLUMN_CARDS_DRAWN: "Cards Drawn",
+        COLUMN_DAMAGE_DEALT: "Damage Dealt",
+        COLUMN_HP_RECOVERED: "HP Recovered",
+        COLUMN_DRAW_CHECKS_TOTAL: "Draw Checks",
+        COLUMN_DRAW_CHECKS_LUCKY: "Lucky Draw Checks",
+        COLUMN_DRAW_LUCK: "Luck",
+        COLUMN_BONUS_DRAWS: "Bonus Draws",
+        COLUMN_EXTRA_BANGS: "Extra Bangs",
     },
 
     ui: {

@@ -1,6 +1,7 @@
 import "../../App.css";
 import BangLogo from "../../Components/BangLogo";
 import Button from "../../Components/Button";
+import Collapsible from "../../Components/Collapsible";
 import { getLabel, Language, LanguageProvider, useLanguage } from "../../Locale/Registry";
 import Env from "../../Model/Env";
 import { downloadCsv } from "../../Utils/FileUtils";
@@ -15,6 +16,13 @@ interface PlayerStats {
     prison_turns_skipped: number;
     duels_lost: number;
     kills: number;
+    cards_drawn: number;
+    damage_dealt: number;
+    hp_recovered: number;
+    draw_checks_total: number;
+    draw_checks_lucky: number;
+    bonus_draws_used: number;
+    volcanic_bangs_played: number;
 }
 
 interface PlayerGameReport {
@@ -25,6 +33,8 @@ interface PlayerGameReport {
     role: string;
     survived: boolean;
     won: boolean;
+    elimination_order: number;
+    died_on_round: number;
     stats: PlayerStats;
 }
 
@@ -56,6 +66,14 @@ function sortPlayers(players: PlayerGameReport[]): PlayerGameReport[] {
     });
 }
 
+function formatLuck(total: number, lucky: number): string {
+    return total === 0 ? '-' : `${lucky}/${total} (${Math.round(lucky / total * 100)}%)`;
+}
+
+function formatOrNone(value: number): string {
+    return value === 0 ? '-' : value.toString();
+}
+
 function GameStatsTable({ game }: { game: GameReport }) {
     const language = useLanguage();
     const players = sortPlayers(game.players);
@@ -75,6 +93,15 @@ function GameStatsTable({ game }: { game: GameReport }) {
             getLabel(language, 'GameStats', 'COLUMN_PRISON_TURNS'),
             getLabel(language, 'GameStats', 'COLUMN_DUELS_LOST'),
             getLabel(language, 'GameStats', 'COLUMN_KILLS'),
+            getLabel(language, 'GameStats', 'COLUMN_ELIMINATION_ORDER'),
+            getLabel(language, 'GameStats', 'COLUMN_DIED_ROUND'),
+            getLabel(language, 'GameStats', 'COLUMN_CARDS_DRAWN'),
+            getLabel(language, 'GameStats', 'COLUMN_DAMAGE_DEALT'),
+            getLabel(language, 'GameStats', 'COLUMN_HP_RECOVERED'),
+            getLabel(language, 'GameStats', 'COLUMN_DRAW_CHECKS_TOTAL'),
+            getLabel(language, 'GameStats', 'COLUMN_DRAW_CHECKS_LUCKY'),
+            getLabel(language, 'GameStats', 'COLUMN_BONUS_DRAWS'),
+            getLabel(language, 'GameStats', 'COLUMN_EXTRA_BANGS'),
         ];
         const rows = players.map(player => [
             player.username,
@@ -88,6 +115,15 @@ function GameStatsTable({ game }: { game: GameReport }) {
             player.stats.prison_turns_skipped.toString(),
             player.stats.duels_lost.toString(),
             player.stats.kills.toString(),
+            player.elimination_order.toString(),
+            player.died_on_round.toString(),
+            player.stats.cards_drawn.toString(),
+            player.stats.damage_dealt.toString(),
+            player.stats.hp_recovered.toString(),
+            player.stats.draw_checks_total.toString(),
+            player.stats.draw_checks_lucky.toString(),
+            player.stats.bonus_draws_used.toString(),
+            player.stats.volcanic_bangs_played.toString(),
         ]);
         downloadCsv(`bang_game_${game.game_id}.csv`, [header, ...rows]);
     };
@@ -131,6 +167,40 @@ function GameStatsTable({ game }: { game: GameReport }) {
                 </tbody>
             </table>
         </div>
+        <Collapsible label={getLabel(language, 'GameStats', 'EXTENDED_TITLE')} storageKey="game-stats-extended" defaultExpanded={false}>
+            <div className="overflow-x-auto w-full">
+                <table className="game-stats-table min-w-full border-collapse text-center">
+                    <thead>
+                        <tr>
+                            <th>{getLabel(language, 'GameStats', 'COLUMN_PLAYER')}</th>
+                            <th>{getLabel(language, 'GameStats', 'COLUMN_ELIMINATION_ORDER')}</th>
+                            <th>{getLabel(language, 'GameStats', 'COLUMN_DIED_ROUND')}</th>
+                            <th>{getLabel(language, 'GameStats', 'COLUMN_CARDS_DRAWN')}</th>
+                            <th>{getLabel(language, 'GameStats', 'COLUMN_DAMAGE_DEALT')}</th>
+                            <th>{getLabel(language, 'GameStats', 'COLUMN_HP_RECOVERED')}</th>
+                            <th>{getLabel(language, 'GameStats', 'COLUMN_DRAW_LUCK')}</th>
+                            <th>{getLabel(language, 'GameStats', 'COLUMN_BONUS_DRAWS')}</th>
+                            <th>{getLabel(language, 'GameStats', 'COLUMN_EXTRA_BANGS')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {players.map(player => (
+                            <tr key={player.user_id} className={player.won ? 'game-stats-winner' : ''}>
+                                <td className="font-medium">{player.username}</td>
+                                <td>{formatOrNone(player.elimination_order)}</td>
+                                <td>{formatOrNone(player.died_on_round)}</td>
+                                <td>{player.stats.cards_drawn}</td>
+                                <td>{player.stats.damage_dealt}</td>
+                                <td>{player.stats.hp_recovered}</td>
+                                <td>{formatLuck(player.stats.draw_checks_total, player.stats.draw_checks_lucky)}</td>
+                                <td>{player.stats.bonus_draws_used}</td>
+                                <td>{player.stats.volcanic_bangs_played}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </Collapsible>
         <div className="flex justify-center mt-4">
             <Button color='blue' onClick={handleDownloadCsv}>{getLabel(language, 'GameStats', 'BUTTON_DOWNLOAD_CSV')}</Button>
         </div>

@@ -113,6 +113,17 @@ export const LABELS: LabelRegistry = {
         COLUMN_DUELS_LOST: "Prohrané souboje",
         COLUMN_KILLS: "Zabití",
         BUTTON_DOWNLOAD_CSV: "Stáhnout CSV",
+        EXTENDED_TITLE: "Rozšířené statistiky",
+        COLUMN_ELIMINATION_ORDER: "Pořadí vyřazení",
+        COLUMN_DIED_ROUND: "Zemřel v kole",
+        COLUMN_CARDS_DRAWN: "Tažené karty",
+        COLUMN_DAMAGE_DEALT: "Způsobené poškození",
+        COLUMN_HP_RECOVERED: "Vyléčeno HP",
+        COLUMN_DRAW_CHECKS_TOTAL: "Doběry (kontrola)",
+        COLUMN_DRAW_CHECKS_LUCKY: "Šťastné doběry",
+        COLUMN_DRAW_LUCK: "Štěstí",
+        COLUMN_BONUS_DRAWS: "Bonusové doběry",
+        COLUMN_EXTRA_BANGS: "Bangy navíc",
     },
 
     ui: {
